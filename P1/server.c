@@ -16,6 +16,8 @@
 #include <signal.h>
 #include "headerMsg.h"
 #include "dataAcces.c"
+#include <sys/time.h>
+
 
 #define PORT "3490"  // the port users will be connecting to
 
@@ -23,6 +25,18 @@
 
 #define BUFFERSIZE 1024  // Bytes 
 
+
+double time_diff(struct timeval x , struct timeval y)
+{
+    double x_ms , y_ms , diff;
+     
+    x_ms = (double)x.tv_sec*1000000 + (double)x.tv_usec;
+    y_ms = (double)y.tv_sec*1000000 + (double)y.tv_usec;
+     
+    diff = (double)y_ms - (double)x_ms;
+     
+    return diff;
+}
 
 void sigchld_handler(int s)
 {
@@ -44,7 +58,7 @@ void *get_in_addr(struct sockaddr *sa)
 
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
-
+// Resp point to the response string created in request
 char* receiveMsg(int new_fd){
 	struct headerMsg hMsg;
 	char buf[BUFFERSIZE];
@@ -81,7 +95,21 @@ void writeMsg(int new_fd, char* resp){
     if ( numbytes == -1)
         perror("send");
 }
-
+void executeRequests(int new_fd){
+	double timesVetor[30];
+	struct timeval before, after;
+	char* resp;
+	for(int i=0; i<30; i++){
+        resp = receiveMsg(new_fd);
+        gettimeofday(&before, NULL);
+        writeMsg(new_fd, resp);	
+        gettimeofday(&after, NULL);
+        timesVetor[i]= time_diff(before , after) ; 
+     }
+     for(int i=0; i<30; i++){
+		printf(" %.0lf  \n" , timesVetor[i]);
+	}
+}
 
 int main(void)
 {
@@ -150,7 +178,7 @@ int main(void)
     }
 
     printf("server: waiting for connections lol...\n");
-    char* resp;
+ 
     while(1) {  // main accept() loop
         sin_size = sizeof their_addr;
         new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &sin_size);
@@ -166,10 +194,7 @@ int main(void)
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
-            for(int i=0; i<30; i++){
-            	resp = receiveMsg(new_fd);
-           		writeMsg(new_fd, resp);	
-            }
+            executeRequests(new_fd);
             exit(0);
         }
         close(new_fd);

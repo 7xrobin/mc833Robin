@@ -89,7 +89,7 @@ void executeRequests(int sockfd){
     	timesVetor[i]= time_diff(before , after) ; 
 	}
 	for(i=0; i<30; i++){
-		printf(" %.0lf us ;" , timesVetor[i]);
+		printf(" %.0lf  \n" , timesVetor[i]);
 	}
 	
 }
