@@ -7,5 +7,4 @@ typedef struct disc {
    char commentary[200];
 } discipline;
 
-// extern discipline* disciplines;
 

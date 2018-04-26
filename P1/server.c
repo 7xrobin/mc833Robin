@@ -77,21 +77,20 @@ char* receiveMsg(int new_fd){
 
 		printf("Function name = %d\n", hMsg.functionName);
 		printf("Payload Size = %d\n", hMsg.sizePayload);
-		printf("Payload = %s\n", hMsg.payload);
-		resp = getRequest(hMsg.functionName);
+		printf("Discipline = %s\n", hMsg.disciplineId);
+		printf("Payload = %s\n", hMsg.disciplineId);
+		resp = getRequest(hMsg);
 		return resp;
-	}
-	else{
-		printf("Na espera de um milagra\n");
 	}
 }
 
 //Function to write a msg and send
 void writeMsg(int new_fd, char* resp){
 	int numbytes;
-	printf("Mensagem enviaada = %s\n", resp);
+	if(strlen(resp) > BUFFERSIZE){
+		printf("resposta maior que buffer\n");
+	}
     numbytes = send(new_fd, resp, BUFFERSIZE, 0);
-   	// printf("numbytes sended = %d\n", numbytes);
     if ( numbytes == -1)
         perror("send");
 }

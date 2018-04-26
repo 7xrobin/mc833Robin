@@ -37,13 +37,14 @@ void receiveMsg(int sockt_fd){
 	int numbytes;
 	numbytes = recv(sockt_fd, buf, BUFFERSIZE, 0);
 	if(numbytes > 0){
-		printf("Client Received = %s\n", buf);
+		printf("Cliente Recebeu = %s\n", buf);
 	}
 	else if (numbytes  == -1) {
         perror("recv");
         exit(1);
     }
     else{
+    	printf("Esperando reposta\n");
     	receiveMsg(sockt_fd);
     }
 
@@ -51,14 +52,9 @@ void receiveMsg(int sockt_fd){
 
 //Function to write a msg and send to serve the request, return same of send()
 // hMsg passed by value change only inside function
-void writeMsg(int sockt_fd, int funcID){
-	struct headerMsg hMsg;
+void writeMsg(int sockt_fd, struct headerMsg hMsg){
 	int numbytes;
-	hMsg.functionName = funcID;
-    strcpy(hMsg.payload, "");
-    hMsg.sizePayload = strlen(hMsg.payload);
     numbytes = send(sockt_fd, (void*)&hMsg, BUFFERSIZE, 0);
-    printf("Write numbytes = %d\n", numbytes);
     if ( numbytes == -1)
         perror("send");
 }
@@ -76,14 +72,35 @@ double time_diff(struct timeval x , struct timeval y)
 }
 
 void executeRequests(int sockfd){
+	struct headerMsg hMsg;
 	int i, Id;
+	char cod[10];
 	double timesVetor[30];
 	struct timeval before, after;
+	printf("Digitar tipo de usuário (0 - aluno ; 1 - professor): \n");
+	scanf("%d", &hMsg.userType );
     printf("Digitar ID da função: \n");
-	scanf("%d", &Id);
+	scanf("%d", &hMsg.functionName );
+	if (hMsg.functionName > 2)
+	{
+		printf("Digitar Codigo da Disciplina: \n");
+		scanf("%s", hMsg.disciplineId);
+		if(hMsg.functionName == 6){
+			printf("Digitar Comentário para a  Disciplina: \n");
+			scanf("%s", hMsg.payload);
+		}
+		else{
+			strcpy(hMsg.payload, "");
+		}
+	}
+	else{
+		strcpy(hMsg.disciplineId, "");
+	}
+    hMsg.sizePayload = strlen(hMsg.payload);
+    printf("Tempos de resposta: \n");
 	for(i=0; i<30; i++){
 		gettimeofday(&before, NULL);
-    	writeMsg(sockfd, Id);
+    	writeMsg(sockfd, hMsg);
     	receiveMsg(sockfd);
     	gettimeofday(&after, NULL);
     	timesVetor[i]= time_diff(before , after) ; 
