@@ -12,12 +12,17 @@ public class AcademicImpl extends UnicastRemoteObject implements AcademicInterfa
 
     @Override
     public String getRequisition(int option, String disciplineId, int user, String comment) throws RemoteException {
-      String response = getAllDisciplines();
+      String response = getAllTitles();
       return response;
     }
 
-    public String getAllDisciplines(){
+    //All titles of all disciplines
+    public String getAllTitles(){
         AcademicData disList = new AcademicData();
-        return disList.data[0].id;
+        String res = "";
+        for (int i = 0; i < disList.data.length; i++ ){
+            res = res + disList.data[i].title + "\n";
+        }
+        return res;
     }
 }
