@@ -9,11 +9,11 @@ public class AcademicData {
          this.data[i] = new Discipline();
       }
 
-        this.data[0].id = "MC202";
-        this.data[0].title = "Estruturas de Dados";
-        this.data[0].program = "Estruturas básicas para representação de informações: listas, árvores, grafos e suas generalizações. Algoritmos para construção, consulta e manipulação de tais estruturas. Desenvolvimento, implementação e testes de programas usando tais estruturas em aplicações específicas.";
+        this.data[0].id = "MC102";
+        this.data[0].title = "Algoritmos e Programação de Computadores";
+        this.data[0].program = "Conceitos básicos de organização de computadores. Construção de algoritmos e sua representação em pseudocódigo e linguagens de alto nível. Desenvolvimento sistemático e implementação de programas. Estruturação, depuração, testes e documentação de programas. Resolução de problemas.";
         this.data[0].schedule = "Ter 10h-12h / Qui 10h-12h / Qui 14h-16h";
-        this.data[0].commentary = "";
+        this.data[0].commentary = "Inicio da disciplina";
 
         this.data[1].id = "MC202";
         this.data[1].title = "Estruturas de Dados";
