@@ -6,7 +6,6 @@
 //  5: getDisciplineComments(req.disciplineId);	
 //	6: setDisciplineComments(req.userType, req.disciplineId, req.payload);	
 
-typedef enum {student, professor} USER;
 struct headerMsg{
 	int userType;				//0: Student; 1: Professor
     int functionName; 			// Request Function Id
