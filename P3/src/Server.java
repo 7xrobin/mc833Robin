@@ -23,8 +23,9 @@ public class Server extends AcademicImpl{
       // Coloca o serviço no registro de objetos do RMI
       LocateRegistry.createRegistry(1099); // 1099 é a porta padrão
       Naming.rebind(AcademicInterface.LOOKUP, aca); // modifica o nome para aquele acordado na interface
-
       System.out.println("Servidor pronto.");
+//      AcademicData dat = new AcademicData();
+//      System.out.println( AcademicData.data[1].id);
 
     } catch (RemoteException e) {
       e.printStackTrace();

@@ -16,7 +16,7 @@ public class AcademicImpl extends UnicastRemoteObject implements AcademicInterfa
       return response;
     }
 
-    private String getAllDisciplines(){
+    public String getAllDisciplines(){
         AcademicData disList = new AcademicData();
         return disList.data[0].id;
     }
