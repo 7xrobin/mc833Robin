@@ -19,23 +19,33 @@ public class client {
 
     public static void executeTasks() throws RemoteException {
         Scanner scanner = new Scanner(System.in);
+        int option;
+        int user = 0;
+        String comment = "";
+        String disId = "";
+        long[] times = new long[30];
+
         System.out.println("Digite a Opção que deseja executar (Números de 1-6): ");
-        int option  = scanner.nextInt();
-        if (option < 3){
-            System.out.println(stub.getRequisition(option, "", 0, ""));
-        }
-        if(option >2){
-            int user = 0;
-            String comment = "";
+        option  = scanner.nextInt();
+
+        if(option >2) {
             System.out.println("Digite o identificador da disciplina (MC102 por exemplo): ");
-            String disId  = scanner.next();
-            if(option == 6){
+            disId = scanner.next();
+            if (option == 6) {
                 System.out.println("Digite 0 se for aluno ou 1 se professor:  ");
-                user  = scanner.nextInt();
+                user = scanner.nextInt();
                 System.out.println("Digite seu comentario: ");
-                comment  = scanner.next();
+                comment = scanner.next();
             }
+        }
+
+        for (int i = 0; i<30; i++){
+            long startTime = System.nanoTime(); // Inicia a contagem do tempo
             System.out.println(stub.getRequisition(option, disId, user, comment));
+            times[i] = System.nanoTime() - startTime;
+        }
+        for (int i = 0; i<30; i++){
+            System.out.println(times[i]);
         }
 
         executeTasks();
